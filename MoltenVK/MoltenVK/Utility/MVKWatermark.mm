@@ -251,8 +251,7 @@ MVKWatermark::MVKWatermark(id<MTLDevice> mtlDevice,
                            uint32_t textureWidth,
                            uint32_t textureHeight,
                            MTLPixelFormat textureFormat,
-                           NSUInteger textureBytesPerRow,
-                           const char* mslSourceCode) : _position(0, 0), _size(1, 1), _color(1, 1, 1, 0.25) {
+                           NSUInteger textureBytesPerRow) : _position(0, 0), _size(1, 1), _color(1, 1, 1, 0.25) {
     _mtlColorFormat = MTLPixelFormatInvalid;
     _mtlDepthFormat = MTLPixelFormatInvalid;
     _mtlStencilFormat = MTLPixelFormatInvalid;
@@ -263,7 +262,7 @@ MVKWatermark::MVKWatermark(id<MTLDevice> mtlDevice,
 
     _mtlDevice = [mtlDevice retain];    // retained
     initTexture(textureContent, textureWidth, textureHeight, textureFormat, textureBytesPerRow);
-    initShaders(mslSourceCode);
+    initShaders();
     initBuffers();
     _mtlRenderPipelineState = nil;
     _mtlRenderPassDescriptor = nil;
@@ -302,15 +301,12 @@ void MVKWatermark::initTexture(unsigned char* textureContent,
 }
 
 // Initialize the shader functions for rendering the watermark
-void MVKWatermark::initShaders(const char* mslSourceCode) {
-    NSError* err = nil;
-    MTLCompileOptions* shdrOpts = [[MTLCompileOptions new] autorelease];
-    id<MTLLibrary> mtlLib = [[_mtlDevice newLibraryWithSource: @(mslSourceCode)
-                                                      options: shdrOpts
-                                                        error: &err] autorelease];
+void MVKWatermark::initShaders() {
+    NSError *err = nil;
+    id<MTLLibrary> mtlLib = mvkNewLibrary(_mtlDevice, &err);
     MVKAssert( !err, "Could not compile watermark shaders %s (code %li) %s",
               err.localizedDescription.UTF8String, (long)err.code, err.localizedFailureReason.UTF8String);
-
+    
     _mtlFunctionVertex = [mtlLib newFunctionWithName: @"watermarkVertex"];          // retained
     _mtlFunctionFragment = [mtlLib newFunctionWithName: @"watermarkFragment"];      // retained
 }
@@ -462,14 +458,12 @@ MVKWatermarkRandom::MVKWatermarkRandom(id<MTLDevice> mtlDevice,
                                        uint32_t textureWidth,
                                        uint32_t textureHeight,
                                        MTLPixelFormat textureFormat,
-                                       NSUInteger textureBytesPerRow,
-                                       const char* mslSourceCode) : MVKWatermark(mtlDevice,
+                                       NSUInteger textureBytesPerRow) : MVKWatermark(mtlDevice,
                                                                                  textureContent,
                                                                                  textureWidth,
                                                                                  textureHeight,
                                                                                  textureFormat,
-                                                                                 textureBytesPerRow,
-                                                                                 mslSourceCode), _positionVelocity(0, 0) {
+                                                                                 textureBytesPerRow), _positionVelocity(0, 0) {
     // Randomly select a position movement mode, but favour bounce mode
     _positionMode = ( (randomUIntBelow(3) == kMVKWatermarkPositionModeTeleport)
                      ? kMVKWatermarkPositionModeTeleport

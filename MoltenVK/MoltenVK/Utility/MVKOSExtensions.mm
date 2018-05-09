@@ -187,4 +187,9 @@ void mvkPopulateGPUInfo(VkPhysicalDeviceProperties& devProps, id<MTLDevice> mtlD
 }
 #endif	//MVK_IOS
 
+id<MTLLibrary> mvkNewLibrary(id<MTLDevice> mtlDevice, NSError **err) {
+    NSString *libPath = [[NSBundle mainBundle] pathForResource:@"MoltenVK" ofType:@"metallib"];
+    id<MTLLibrary> mtlLib = [mtlDevice newLibraryWithFile:libPath error:err];
+    return mtlLib;
+}
 

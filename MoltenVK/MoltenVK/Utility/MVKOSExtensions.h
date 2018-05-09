@@ -71,3 +71,5 @@ uint64_t mvkRecommendedMaxWorkingSetSize(id<MTLDevice> mtlDevice);
 /** Populate the propertes with info about the GPU represented by the MTLDevice. */
 void mvkPopulateGPUInfo(VkPhysicalDeviceProperties& devProps, id<MTLDevice> mtlDevice);
 
+/** Creates a new library that contains the functions stored in the app’s default Metal library. */
+id<MTLLibrary> mvkNewLibrary(id<MTLDevice> mtlDevice, NSError **err);

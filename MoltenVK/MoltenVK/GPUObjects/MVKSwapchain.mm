@@ -23,7 +23,6 @@
 #include "MVKOSExtensions.h"
 #include "MVKWatermark.h"
 #include "MVKWatermarkTextureContent.h"
-#include "MVKWatermarkShaderSource.h"
 #include "mvk_datatypes.h"
 #include "MVKLogging.h"
 #import "CAMetalLayer+MoltenVK.h"
@@ -113,8 +112,7 @@ void MVKSwapchain::renderWatermark(id<MTLTexture> mtlTexture, id<MTLCommandBuffe
                                                        __watermarkTextureWidth,
                                                        __watermarkTextureHeight,
                                                        __watermarkTextureFormat,
-                                                       mvkMTLPixelFormatBytesPerRow(__watermarkTextureFormat, __watermarkTextureWidth),
-                                                       __watermarkShaderSource);
+                                                       mvkMTLPixelFormatBytesPerRow(__watermarkTextureFormat, __watermarkTextureWidth));
         }
         _licenseWatermark->render(mtlTexture, mtlCmdBuff, _performanceStatistics.lastFrameInterval);
     } else {

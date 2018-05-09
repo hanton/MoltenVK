@@ -85,8 +85,7 @@ public:
                  uint32_t textureWidth,
                  uint32_t textureHeight,
                  MTLPixelFormat textureFormat,
-                 NSUInteger textureBytesPerRow,
-                 const char* mtlShaderSource);
+                 NSUInteger textureBytesPerRow);
 
     virtual ~MVKWatermark();
 
@@ -96,7 +95,7 @@ protected:
                      uint32_t textureHeight,
                      MTLPixelFormat textureFormat,
                      NSUInteger textureBytesPerRow);
-    void initShaders(const char* mslSourceCode);
+    void initShaders();
     void initBuffers();
     void updateUniforms();
     void markUniformsDirty();
@@ -156,8 +155,7 @@ public:
                        uint32_t textureWidth,
                        uint32_t textureHeight,
                        MTLPixelFormat textureFormat,
-                       NSUInteger textureBytesPerRow,
-                       const char* mtlShaderSource);
+                       NSUInteger textureBytesPerRow);
 
 protected:
     float _minOpacity;
