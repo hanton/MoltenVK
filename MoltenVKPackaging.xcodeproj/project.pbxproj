@@ -15,6 +15,7 @@
 				A9FEADD71F3517480010240E /* Package MoltenVKShaderConverter */,
 				A9A5D8A61FB3AABA00F20475 /* Package Docs */,
 				A9FEADDB1F3517480010240E /* Update Latest */,
+				40BBEBD820A19511008D4C5E /* Package Metal Libraries */,
 			);
 			dependencies = (
 				A9FEADBD1F3517480010240E /* PBXTargetDependency */,
@@ -295,6 +296,20 @@
 /* End PBXReferenceProxy section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		40BBEBD820A19511008D4C5E /* Package Metal Libraries */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Package Metal Libraries";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e\n\n# Package folder\nexport MVK_PROD_NAME=\"MoltenVK\"\nexport MVK_WKSPC_LOCN=\"${PROJECT_DIR}\"\nexport MVK_PKG_LOCN=\"${MVK_WKSPC_LOCN}/Package\"\n\n# Latest configuration package folder location\nexport MVK_PKG_LATEST_LOCN=\"${MVK_PKG_LOCN}/Latest\"\nexport MVK_PKG_LATEST_PROD_PATH=\"${MVK_PKG_LATEST_LOCN}/${MVK_PROD_NAME}\"\n\n# metallib files\nexport MVK_DEFAULT_METALLIB_NAME=\"default.metallib\"\nexport MVK_METALLIB_NAME=\"${MVK_PROD_NAME}.metallib\"\n\n# Package precompiled macOS Metal shader library\nexport MVK_OS_PROD_PATH=\"${MVK_PKG_LATEST_PROD_PATH}/macOS\"\nexport MVK_OS_PROD_METALLIB_PATH=\"${MVK_OS_PROD_PATH}/${MVK_PROD_NAME}.framework/Versions/Current/Resources\"\nmv \"${MVK_OS_PROD_METALLIB_PATH}/${MVK_DEFAULT_METALLIB_NAME}\" \"${MVK_OS_PROD_METALLIB_PATH}/${MVK_METALLIB_NAME}\"\ncp \"${MVK_OS_PROD_METALLIB_PATH}/${MVK_METALLIB_NAME}\" \"${MVK_OS_PROD_PATH}/${MVK_METALLIB_NAME}\"\n\n# Package precompiled iOS Metal shader library\nexport MVK_OS_PROD_PATH=\"${MVK_PKG_LATEST_PROD_PATH}/iOS\"\nexport MVK_OS_PROD_METALLIB_PATH=\"${MVK_OS_PROD_PATH}/${MVK_PROD_NAME}.framework\"\nmv \"${MVK_OS_PROD_METALLIB_PATH}/${MVK_DEFAULT_METALLIB_NAME}\" \"${MVK_OS_PROD_METALLIB_PATH}/${MVK_METALLIB_NAME}\"\ncp \"${MVK_OS_PROD_METALLIB_PATH}/${MVK_METALLIB_NAME}\" \"${MVK_OS_PROD_PATH}/${MVK_METALLIB_NAME}\"";
+		};
 		A9A5D8A61FB3AABA00F20475 /* Package Docs */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
