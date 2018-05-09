@@ -17,11 +17,11 @@
  */
 
 #include "MVKCommandResourceFactory.h"
-#include "MVKCommandPipelineStateFactoryShaderSource.h"
 #include "MVKFoundation.h"
 #include "mvk_datatypes.h"
 #include "NSString+MoltenVK.h"
 #include "MVKLogging.h"
+#include "MVKOSExtensions.h"
 
 using namespace std;
 
@@ -353,11 +353,8 @@ MVKCommandResourceFactory::MVKCommandResourceFactory(MVKDevice* device) : MVKBas
 void MVKCommandResourceFactory::initMTLLibrary() {
     uint64_t startTime = _device->getPerformanceTimestamp();
     @autoreleasepool {
-        MTLCompileOptions* shdrOpts = [[MTLCompileOptions new] autorelease];
         NSError* err = nil;
-        _mtlLibrary = [getMTLDevice() newLibraryWithSource: @(_MVKStaticCmdShaderSource)
-                                                   options: shdrOpts
-                                                     error: &err];    // retained
+        _mtlLibrary = mvkNewLibrary(getMTLDevice(), &err);    // retained
         MVKAssert( !err, "Could not compile command shaders %s (code %li) %s", err.localizedDescription.UTF8String, (long)err.code, err.localizedFailureReason.UTF8String);
     }
     _device->addActivityPerformance(_device->_performanceStatistics.shaderCompilation.mslCompile, startTime);
